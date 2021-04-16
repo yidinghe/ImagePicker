@@ -160,7 +160,7 @@ object FileUriUtils {
         try {
             val extension = getImageExtension(uri)
             inputStream = context.contentResolver.openInputStream(uri)
-            file = FileUtil.getImageFile(context.cacheDir, extension)
+            file = FileUtil.getImageFile(context.cacheDir, extension, context)
             if (file == null) return null
             outputStream = FileOutputStream(file)
             if (inputStream != null) {

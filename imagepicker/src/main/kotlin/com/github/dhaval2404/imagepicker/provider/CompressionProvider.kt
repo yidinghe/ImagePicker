@@ -182,7 +182,7 @@ class CompressionProvider(activity: ImagePickerActivity) : BaseProvider(activity
         }
 
         val extension = FileUriUtils.getImageExtension(file)
-        val compressFile: File? = FileUtil.getImageFile(dir = mFileDir, extension = extension)
+        val compressFile: File? = FileUtil.getImageFile(dir = mFileDir, extension = extension, this)
         return if (compressFile != null) {
             ImageUtil.compressImage(
                 file, maxWidth.toFloat(), maxHeight.toFloat(),

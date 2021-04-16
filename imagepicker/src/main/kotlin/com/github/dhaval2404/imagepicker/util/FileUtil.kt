@@ -1,5 +1,6 @@
 package com.github.dhaval2404.imagepicker.util
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.os.Environment
 import android.os.StatFs
@@ -28,14 +29,14 @@ object FileUtil {
      * @return Return Empty file to store camera image.
      * @throws IOException if permission denied of failed to create new file.
      */
-    fun getImageFile(dir: File? = null, extension: String? = null): File? {
+    fun getImageFile(dir: File? = null, extension: String? = null, context: Context): File? {
         try {
             // Create an image file name
             val ext = extension ?: ".jpg"
             val imageFileName = "IMG_${getTimestamp()}$ext"
 
             // Create File Directory Object
-            val storageDir = dir ?: getCameraDirectory()
+            val storageDir = dir ?: getCameraDirectory(context)
 
             // Create Directory If not exist
             if (!storageDir.exists()) storageDir.mkdirs()
@@ -58,8 +59,8 @@ object FileUtil {
      *
      * @return File Camera Image Directory
      */
-    private fun getCameraDirectory(): File {
-        val dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)
+    private fun getCameraDirectory(context: Context): File {
+        val dir = context.getExternalFilesDir(Environment.DIRECTORY_PICTURES)
         return File(dir, "Camera")
     }
 
