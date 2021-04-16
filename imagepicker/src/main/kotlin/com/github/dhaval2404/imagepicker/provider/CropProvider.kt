@@ -108,8 +108,10 @@ class CropProvider(activity: ImagePickerActivity, private val launcher: (Intent)
     private fun cropImage(file: File) {
 
         val imageUri =
-            FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".imagepicker.provider",
-                file)
+            FileProvider.getUriForFile(
+                this, this.getApplicationContext().getPackageName() + ".imagepicker.provider",
+                file
+            )
 
         val extension = FileUriUtils.getImageExtension(imageUri)
         mCropImageFile = FileUtil.getImageFile(dir = mFileDir, extension = extension, this)
@@ -132,7 +134,7 @@ class CropProvider(activity: ImagePickerActivity, private val launcher: (Intent)
         if (mMaxWidth > 0 && mMaxHeight > 0) {
             uCrop.withMaxResultSize(mMaxWidth, mMaxHeight)
         }
-        launcher.invoke(uCrop.getIntent(activity))
+        launcher.invoke(uCrop.getIntent(activity).addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION))
     }
 
     /**
