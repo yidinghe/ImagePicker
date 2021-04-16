@@ -6,6 +6,7 @@ import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.result.ActivityResult
+import androidx.core.content.FileProvider
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.github.dhaval2404.imagepicker.ImagePickerActivity
 import com.github.dhaval2404.imagepicker.R
@@ -105,8 +106,12 @@ class CropProvider(activity: ImagePickerActivity, private val launcher: (Intent)
      */
     @Throws(IOException::class)
     private fun cropImage(file: File) {
-        val uri = Uri.fromFile(file)
-        val extension = FileUriUtils.getImageExtension(uri)
+
+        val imageUri =
+            FileProvider.getUriForFile(this, this.getApplicationContext().getPackageName() + ".imagepicker.provider",
+                file)
+
+        val extension = FileUriUtils.getImageExtension(imageUri)
         mCropImageFile = FileUtil.getImageFile(dir = mFileDir, extension = extension, this)
 
         if (mCropImageFile == null || !mCropImageFile!!.exists()) {
@@ -117,7 +122,7 @@ class CropProvider(activity: ImagePickerActivity, private val launcher: (Intent)
 
         val options = UCrop.Options()
         options.setCompressionFormat(FileUtil.getCompressFormat(extension))
-        val uCrop = UCrop.of(uri, Uri.fromFile(mCropImageFile))
+        val uCrop = UCrop.of(imageUri, Uri.fromFile(mCropImageFile))
             .withOptions(options)
 
         if (mCropAspectX > 0 && mCropAspectY > 0) {
